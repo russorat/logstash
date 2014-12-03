@@ -37,7 +37,7 @@ module LogStash::Util
 
     def set(accessor, value)
       target, key = lookup(accessor)
-      target[key] = value
+      target[target.is_a?(Array) ? key.to_i : key] = value
     end
 
     def strict_set(accessor, value)
@@ -46,7 +46,7 @@ module LogStash::Util
 
     def del(accessor)
       target, key = lookup(accessor)
-      target.delete(key)
+      target.is_a?(Array) ? target.delete_at(key.to_i) : target.delete(key)
     end
 
     private

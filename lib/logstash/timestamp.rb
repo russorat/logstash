@@ -10,8 +10,9 @@ module LogStash
 
   class Timestamp
     extend Forwardable
+    include Comparable
 
-    def_delegators :@time, :tv_usec, :usec, :year, :iso8601, :to_i, :tv_sec, :to_f, :to_edn
+    def_delegators :@time, :tv_usec, :usec, :year, :iso8601, :to_i, :tv_sec, :to_f, :to_edn, :<=>, :+
 
     attr_reader :time
 
@@ -89,5 +90,8 @@ module LogStash
     end
     alias_method :to_s, :to_iso8601
 
+    def -(value)
+      @time - (value.is_a?(Timestamp) ? value.time : value)
+    end
   end
 end
